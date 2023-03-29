@@ -1,0 +1,31 @@
+(01) First line states whether the trip has been allocated or not.
+
+(02) Second line states the index of the schedule where the pick-up was accommodated.
+     -1 if not accommodated.
+
+(03) Third line states the index of the schedule where the drop-off was accommodated.
+     -1 if not accommodated.
+
+(04) Fourth line states the index of the schedule where the EV returned to the SEC.
+     -1 if not accommodated.
+
+(05) Fifth line states if subsequent trips could afford the extra delay and energy from accommodating the trip.
+
+(06) From sixth line onwards it presents the updated schedule of the EV after accommodating the trip.
+     Same schedule as original if the trip was not accommodated.
+
+     Once again, the schedule is a list of movements, where each mov is represented
+     as the tuple( TA, TB, AX, AY, BX, BY, PS, PE, ES, EE, TL, LW, TD ), where:
+           (00) TA. Integer => Time of the start of the movement.
+           (01) TB. Integer => Time of the end of the movement.
+           (02) AX. Integer => X-axis of the position at the start of the movement.
+           (03) AY. Integer => Y-axis of the position at the start of the movement.
+           (04) BX. Integer => X-axis of the position at the end of the movement.
+           (05) BY. Integer => Y-axis of the position at the end of the movement.
+           (06) PS. Integer => Number of passengers at the start of the movement.
+           (07) PE. Integer => Number of passengers at the end of the movement.
+           (08) ES. Integer => Battery left at the start of the movement.
+           (09) EE. Integer => Battery left at the end of the movement.
+           (10) TL. Integer => Movement label.
+           (11) LW. Integer => Leeway or time the movement can be delayed.
+           (12) TD. Integer => Movement distance covered.
