@@ -46,7 +46,7 @@ def my_main(input_file_name, output_file_name):
                                          )
 
     # 4. We parse the instance out
-    parse_out.parse_out(output_file_name,
+    total_energy = parse_out.parse_out(output_file_name,
                         res,
                         EVs,
                         TPs,
@@ -54,7 +54,7 @@ def my_main(input_file_name, output_file_name):
                        )
 
     # 5. We return res
-    return res
+    return res, total_energy
 
 
 # --------------------------------------------------------

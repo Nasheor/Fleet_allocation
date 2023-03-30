@@ -122,9 +122,9 @@ def generate_sub_problems(input_folder, output_folder):
     (city, SECs, EVs, TPs, TDs) = parse_in.parse_in(instance_file)
 
     # 3. If the output folder exists, we remove it
-    # if os.path.exists(output_folder):
-    #     shutil.rmtree(output_folder)
-    # os.mkdir(output_folder)
+    if os.path.exists(output_folder):
+        shutil.rmtree(output_folder)
+    os.mkdir(output_folder)
 
     # 4. We create the folders and folders
     for SEC_index in SECs:

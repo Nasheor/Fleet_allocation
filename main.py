@@ -49,8 +49,6 @@ if __name__ == '__main__':
             neighbors[community].append(community_numbers[i + 1])
     print(f"Neighbors: {neighbors}")
 
-    data_logger = DataLogger()
-
     # Create the communities
     communities = []
     for i in community_numbers:

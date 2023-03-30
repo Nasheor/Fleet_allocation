@@ -39,14 +39,14 @@ def solve_sub_problems(input_folder,
     start_time = time.time()
 
     # 2. If the output folder already exists, we remove it and re-create it
-    # if os.path.exists(output_folder):
-    #     shutil.rmtree(output_folder)
-    # os.mkdir(output_folder)
+    if os.path.exists(output_folder):
+        shutil.rmtree(output_folder)
+    os.mkdir(output_folder)
 
     # 3. If the solution folder already exists, we remove it and re-create it
-    # if os.path.exists(solution_folder):
-    #     shutil.rmtree(solution_folder)
-    # os.mkdir(solution_folder)
+    if os.path.exists(solution_folder):
+        shutil.rmtree(solution_folder)
+    os.mkdir(solution_folder)
 
     # 4. We open a file called solution.csv for writing
     solution_csv_stream = codecs.open(solution_folder + "sub_problem_solutions.csv", "w", encoding="utf-8")
@@ -76,13 +76,13 @@ def solve_sub_problems(input_folder,
 
             # 6.3.2. We solve the instance
             try:
-                num_trips_satisfied = run_instance.my_main(input_file_name, output_file_name)
+                num_trips_satisfied, total_energy = run_instance.my_main(input_file_name, output_file_name)
             except:
                 print(input_file_name + " failed")
                 num_trips_satisfied = -1
 
             # 6.3.3. We write the result to the solution file
-            my_str = input_file_name + ";" + str(num_trips_satisfied) + "\n"
+            my_str = input_file_name + ";" + str(num_trips_satisfied) + ";" + str(total_energy) + "\n"
             solution_csv_stream.write(my_str)
 
     # 7. close the solution.csv file
