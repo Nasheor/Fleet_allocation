@@ -1,7 +1,7 @@
 import parse_in
 import codecs
-import Environment
-import Community
+from Q_Environment import Q_Environment
+from Community import Community
 
 
 if __name__ == '__main__':
@@ -49,14 +49,18 @@ if __name__ == '__main__':
             neighbors[community].append(community_numbers[i + 1])
     print(f"Neighbors: {neighbors}")
 
-    # Create the communities
+    # Create the Commmumities
     communities = []
-    for i in community_numbers:
-        community_id = i
-        location = community_indices[i-1]
-        vehicle_count, _ = community_vehicles_petitions[i-1]
-        trips = community_trips[i]
-        rebalancing_targets = {neighbor: 0 for neighbor in neighbors[community_id]}
-        dispatch_targets = {neighbor: 0 for neighbor in neighbors[community_id]}
-        community = Community(community_id, vehicle_count, trips, rebalancing_targets, dispatch_targets, data_logger)
-        communities.append(community)
+    for index in range(len(community_numbers)):
+        id = community_numbers[index]
+        x_loc, y_loc = community_indices[index]
+        initial_vehicle_count, initial_trips = community_vehicles_petitions[index]
+        community_neighbors = neighbors[index+1]
+        c = Community(id, x_loc, y_loc, initial_vehicle_count, initial_trips,
+                                     community_neighbors)
+        communities.append(c)
+
+    print(f"{communities}")
+
+
+
