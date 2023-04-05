@@ -3,8 +3,7 @@ import codecs
 from Q_Environment import Q_Environment
 from Community import Community
 
-
-if __name__ == '__main__':
+def parse_initial_data():
 
     # Read the Input file
     file = 'ride_sharing_framework/2_Instances/Instance_to_solve/d_metropolis.in'
@@ -61,6 +60,29 @@ if __name__ == '__main__':
         communities.append(c)
 
     print(f"{communities}")
+
+    # Reading the solutions file for getting the number of trips satisfied and energy consumed
+    solutions_file = './ride_sharing_framework/4_Solutions/Instance_to_solve/sub_problem_solutions.csv'
+    requests_satisfied_data = {}
+    with codecs.open(solutions_file, "r", encoding='utf-8') as f:
+        data = f.readlines()
+        for line in data:
+            path, trips_satisfied, energy_consumed = line.strip().split(';')
+            requests_satisfied_data[path.split('/')[5].split('.')[0]] = (int(trips_satisfied), float(energy_consumed))
+
+    print(f"{requests_satisfied_data['SEC_1_num_EVs_400']}")
+    num_evs = len(EVs.keys())
+    return communities, num_evs, requests_satisfied_data
+
+
+if __name__ == '__main__':
+    # Run the Q Environment
+    communities, num_evs, requests_satisfied_data = parse_initial_data()
+    episodes = 10
+    num_days = 200
+    q_env = Q_Environment(episodes, num_days, communities, num_evs, requests_satisfied_data)
+    q_env.compute_initial_states_and_rewards()
+    q_env.run()
 
 
 

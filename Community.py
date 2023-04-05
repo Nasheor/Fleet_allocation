@@ -26,6 +26,7 @@ class Community:
             'total_trips': self.initial_trips,
             'trips_satisfied': self.trips_satisfied,
             'energy_consumed': self.energy_consumed,
+            'neighbors': self.neighbors,
             'reward': self.reward
         }
         return state
