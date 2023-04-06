@@ -55,11 +55,10 @@ def parse_initial_data():
         x_loc, y_loc = community_indices[index]
         initial_vehicle_count, initial_trips = community_vehicles_petitions[index]
         community_neighbors = neighbors[index+1]
+        action = 'serve'
         c = Community(id, x_loc, y_loc, initial_vehicle_count, initial_trips,
                                      community_neighbors)
         communities.append(c)
-
-    print(f"{communities}")
 
     # Reading the solutions file for getting the number of trips satisfied and energy consumed
     solutions_file = './ride_sharing_framework/4_Solutions/Instance_to_solve/sub_problem_solutions.csv'
@@ -70,7 +69,6 @@ def parse_initial_data():
             path, trips_satisfied, energy_consumed = line.strip().split(';')
             requests_satisfied_data[path.split('/')[5].split('.')[0]] = (int(trips_satisfied), float(energy_consumed))
 
-    print(f"{requests_satisfied_data['SEC_1_num_EVs_400']}")
     num_evs = len(EVs.keys())
     return communities, num_evs, requests_satisfied_data
 
@@ -78,11 +76,13 @@ def parse_initial_data():
 if __name__ == '__main__':
     # Run the Q Environment
     communities, num_evs, requests_satisfied_data = parse_initial_data()
-    episodes = 10
-    num_days = 200
+    episodes = 100
+    num_days = 10
     q_env = Q_Environment(episodes, num_days, communities, num_evs, requests_satisfied_data)
     q_env.compute_initial_states_and_rewards()
+    q_env.compute_initial_trips_satisfied()
     q_env.run()
+    q_env.print_results()
 
 
 

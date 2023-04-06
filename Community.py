@@ -31,8 +31,8 @@ class Community:
         }
         return state
 
-    def set_state(self, available_vehicles, trips, energy, reward):
+    def set_vehicles(self, available_vehicles):
         self.available_vehicles = available_vehicles
-        self.trips_satisfied = trips
-        self.energy_consumed = energy
-        self.reward = reward
+
+    def set_trips(self, trips_satisfied):
+        self.trips_satisfied = trips_satisfied
