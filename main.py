@@ -1,6 +1,6 @@
 import parse_in
 import codecs
-from Q_Environment import Q_Environment
+from Q_Environment.TripsEnvironment import Q_Environment
 from Community import Community
 
 def parse_initial_data():
@@ -76,8 +76,8 @@ def parse_initial_data():
 if __name__ == '__main__':
     # Run the Q Environment
     communities, num_evs, requests_satisfied_data = parse_initial_data()
-    episodes = 100
-    num_days = 10
+    episodes = 20
+    num_days = 50
     q_env = Q_Environment(episodes, num_days, communities, num_evs, requests_satisfied_data)
     q_env.compute_initial_states_and_rewards()
     q_env.compute_initial_trips_satisfied()

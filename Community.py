@@ -36,3 +36,6 @@ class Community:
 
     def set_trips(self, trips_satisfied):
         self.trips_satisfied = trips_satisfied
+
+    def set_energy(self, energy_consumed):
+        self.energy_consumed = energy_consumed

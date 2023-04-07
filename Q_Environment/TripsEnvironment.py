@@ -4,7 +4,7 @@ import time
 import random
 
 
-class Q_Environment:
+class TripsEnvironment:
     def __init__(self,episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed):
         self.episodes = episodes
         self.num_time_steps = num_time_steps
@@ -14,7 +14,7 @@ class Q_Environment:
         self.petitions_satisfied_energy_consumed = petitions_satisfied_energy_consumed
         # Rebalance and compute reward based on trips
         self.q_communities = communities
-        self.actions = ['serve', 'rebalance_trips']
+        self.actions = ['serve', 'rebalance_trips'] # serve: 0, rebalance_trips: 1
         self.states = []
         self.rewards = {}
         self.q_table = []
@@ -64,7 +64,7 @@ class Q_Environment:
         print(f"Total Trips Satisfied: {total_trips_satisfied}")
 
     def target_policy(self, community):
-        print(f"Community-{community.get_state()['id']} Target Policy")
+        # print(f"Community-{community.get_state()['id']} Target Policy")
         target_policy= {}
         neighbors = community.get_state()['neighbors']
         from_community_id = community.get_state()['id']
@@ -78,7 +78,7 @@ class Q_Environment:
         return max(target_policy, key=target_policy.get)
 
     def exploratory_policy(self, community):
-        print(f"Community-{community.get_state()['id']} Exploratory Policy")
+        # print(f"Community-{community.get_state()['id']} Exploratory Policy")
         target_policy= {}
         neighbors = community.get_state()['neighbors']
         from_community_id = community.get_state()['id']
@@ -121,8 +121,8 @@ class Q_Environment:
                             next_state = (from_community_id, from_community_ev, to_community_id, to_community_ev, action)
                             from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
                             to_community_key = 'SEC_' + str(to_community_id) + "_num_EVs_" + str(to_community_ev)
-                            self.q_communities[i].set_trips(self.petitions_satisfied_energy_consumed[from_community_key])
-                            self.q_communities[to_community_id-1].set_trips(self.petitions_satisfied_energy_consumed[to_community_key])
+                            self.q_communities[i].set_trips(self.petitions_satisfied_energy_consumed[from_community_key][0])
+                            self.q_communities[to_community_id-1].set_trips(self.petitions_satisfied_energy_consumed[to_community_key][0])
                     reward = self.rewards[next_state]
                     discounted_reward = self.q_table[i][self.states.index(current_state), self.actions.index(action)] + \
                                         alpha * (reward + gamma * np.max(self.q_table[i][self.states.index(next_state)])) - \
