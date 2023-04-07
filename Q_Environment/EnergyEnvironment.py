@@ -4,7 +4,7 @@ import time
 import random
 
 
-class TripsEnvironment:
+class EnergyEnvironment:
     def __init__(self,episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed):
         self.episodes = episodes
         self.num_time_steps = num_time_steps
