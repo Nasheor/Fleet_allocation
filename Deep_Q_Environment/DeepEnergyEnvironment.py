@@ -102,5 +102,6 @@ class DeepEnergyEnvironment(EnergyEnvironment):
         # Calculate the reward based on the new state
         reward = self.calculate_reward(from_community_id, from_community_ev, to_community_id, to_community_ev, self.actions[action])
 
+
         return reward, next_state, done
 

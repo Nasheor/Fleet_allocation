@@ -1,4 +1,4 @@
 # Fleet_allocation
 
-python /Applications/CPLEX_Studio221/python/setup.py install
+
 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

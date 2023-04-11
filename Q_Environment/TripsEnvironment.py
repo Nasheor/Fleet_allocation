@@ -7,7 +7,8 @@ import copy
 
 
 class TripsEnvironment:
-    def __init__(self,episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed):
+    def __init__(self,episodes, num_time_steps, communities, num_evs,
+                 petitions_satisfied_energy_consumed, total_trips, total_energy):
         self.episodes = episodes
         self.num_time_steps = num_time_steps
         self.current_time_step = 0
@@ -16,6 +17,8 @@ class TripsEnvironment:
         self.petitions_satisfied_energy_consumed = petitions_satisfied_energy_consumed
         # Rebalance and compute reward based on trips
         self.q_communities = copy.deepcopy(communities)
+        self.total_trips = total_trips
+        self.total_energy = total_energy
         self.actions = ['serve', 'rebalance_trips'] # serve: 0, rebalance_trips: 1
         self.states = []
         self.rewards = {}

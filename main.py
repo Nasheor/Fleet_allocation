@@ -73,12 +73,19 @@ def parse_initial_data():
             requests_satisfied_data[path.split('/')[5].split('.')[0]] = (int(trips_satisfied), float(energy_consumed))
 
     num_evs = len(EVs.keys())
-    return communities, num_evs, requests_satisfied_data
+    return communities, num_evs, requests_satisfied_data, community_vehicles_petitions
 
 
 if __name__ == '__main__':
     # Run the Q Environment
-    communities, num_evs, requests_satisfied_data = parse_initial_data()
+    communities, num_evs, requests_satisfied_data, community_vehicle_petitions = parse_initial_data()
+    total_trips = 0
+    total_energy = 0
+    for item in community_vehicle_petitions:
+        (ev, trips) = item
+        total_trips += trips
+        total_energy += (ev * 100)
+
     episodes = [1, 5, 10, 15]
     num_days = [5, 10, 15, 20]
     # episodes = [5]
@@ -99,14 +106,16 @@ if __name__ == '__main__':
             file_name = str(episode)+'_episode_'+str(num_day)+'_days.txt'
 
             path = paths[0]+file_name
-            trips_env = TripsEnvironment(episode, num_day, communities, num_evs, requests_satisfied_data)
+            trips_env = TripsEnvironment(episode, num_day, communities, num_evs,
+                                         requests_satisfied_data, total_trips, total_energy)
             trips_env.compute_initial_states_and_rewards()
             trips_env.compute_initial_trips_satisfied()
             trips_env.run()
             trips_env.print_results(path)
 
             path = paths[1]+file_name
-            energy_env = EnergyEnvironment(episode, num_day, communities, num_evs, requests_satisfied_data)
+            energy_env = EnergyEnvironment(episode, num_day, communities, num_evs,
+                                           requests_satisfied_data, total_trips, total_energy)
             energy_env.compute_initial_states_and_rewards()
             energy_env.compute_initial_trips_satisfied()
             energy_env.run()
