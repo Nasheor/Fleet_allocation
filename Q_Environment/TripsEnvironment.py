@@ -2,6 +2,8 @@ import numpy as np
 from tqdm import tqdm
 import time
 import random
+import codecs
+import copy
 
 
 class TripsEnvironment:
@@ -9,11 +11,11 @@ class TripsEnvironment:
         self.episodes = episodes
         self.num_time_steps = num_time_steps
         self.current_time_step = 0
-        self.communities = communities
+        self.communities = copy.deepcopy(communities)
         self.num_evs = num_evs
         self.petitions_satisfied_energy_consumed = petitions_satisfied_energy_consumed
         # Rebalance and compute reward based on trips
-        self.q_communities = communities
+        self.q_communities = copy.deepcopy(communities)
         self.actions = ['serve', 'rebalance_trips'] # serve: 0, rebalance_trips: 1
         self.states = []
         self.rewards = {}
@@ -50,18 +52,21 @@ class TripsEnvironment:
 
     def compute_initial_trips_satisfied(self):
         total_trips_satisfied = 0
+        total_energy_consumed = 0
         for community in self.communities:
             from_community_id = community.get_state()['id']
             from_community_ev = community.get_state()['available_vehicles']
             from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
             community.set_trips(self.petitions_satisfied_energy_consumed[from_community_key][0])
             total_trips_satisfied += self.petitions_satisfied_energy_consumed[from_community_key][0]
+            total_energy_consumed += self.petitions_satisfied_energy_consumed[from_community_key][1]
             print(f"Commmunity ID: {community.get_state()['id']}")
             print(f"Available Vehicles: {community.get_state()['available_vehicles']}")
             print(f"Total Trips: {community.get_state()['total_trips']}\tTrips Satisfied: {community.get_state()['trips_satisfied']}")
             print(f"Energy Consumed: {self.petitions_satisfied_energy_consumed[from_community_key][1]}")
             print(f"------------------------------------------------------------------\n")
         print(f"Total Trips Satisfied: {total_trips_satisfied}")
+        print(f"Total Energy Consumed: {total_energy_consumed}")
 
     def target_policy(self, community):
         # print(f"Community-{community.get_state()['id']} Target Policy")
@@ -131,21 +136,93 @@ class TripsEnvironment:
                     self.q_table[i][self.states.index(current_state), self.actions.index(action)] = discounted_reward
 
 
-    def print_results(self):
+    def print_results(self, path):
+        my_output_stream = codecs.open(path, "w", encoding="utf-8")
         total_trips_satisfied = 0
+        total_energy_consumed = 0
+        for community in self.communities:
+            from_community_id = community.get_state()['id']
+            from_community_ev = community.get_state()['available_vehicles']
+            from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
+            community.set_trips(self.petitions_satisfied_energy_consumed[from_community_key][0])
+            total_trips_satisfied += self.petitions_satisfied_energy_consumed[from_community_key][0]
+            total_energy_consumed += self.petitions_satisfied_energy_consumed[from_community_key][1]
+            my_output_stream.write(f"Commmunity ID: {community.get_state()['id']}\n")
+            my_output_stream.write(f"Available Vehicles: {community.get_state()['available_vehicles']}\n")
+            my_output_stream.write(f"Total Trips: {community.get_state()['total_trips']}\tTrips Satisfied: {community.get_state()['trips_satisfied']}\n")
+            my_output_stream.write(f"Energy Consumed: {self.petitions_satisfied_energy_consumed[from_community_key][1]}\n")
+            my_output_stream.write(f"------------------------------------------------------------------\n")
+        my_output_stream.write(f"\t\t\tTotal Trips Satisfied: {total_trips_satisfied}\n")
+        my_output_stream.write(f"\t\t\tTotal Energy Consumed: {total_energy_consumed}\n")
+        my_output_stream.write(f"------------------------------------------------------------------\n")
+
+        total_trips_satisfied = 0
+        total_energy_consumed = 0
         for community in self.q_communities:
             from_community_key = 'SEC_' + str(community.get_state()['id']) + "_num_EVs_" + str(community.get_state()['available_vehicles'])
-            print(f"Commmunity ID: {community.get_state()['id']}")
-            print(f"Available Vehicles: {community.get_state()['available_vehicles']}")
+            my_output_stream.write(f"Commmunity ID: {community.get_state()['id']}\n")
+            my_output_stream.write(f"Available Vehicles: {community.get_state()['available_vehicles']}\n")
             total_trips_satisfied += community.get_state()['trips_satisfied']
-            print(f"Total Trips: {community.get_state()['total_trips']}\tTrips Satisfied: {community.get_state()['trips_satisfied']}")
-            print(f"Energy Consumed: {self.petitions_satisfied_energy_consumed[from_community_key][1]}")
-            print(f"------------------------------------------------------------------\n")
-        print(f"Total Trips Satisfied: {total_trips_satisfied}")
+            total_energy_consumed += self.petitions_satisfied_energy_consumed[from_community_key][1]
+            my_output_stream.write(f"Total Trips: {community.get_state()['total_trips']}\tTrips Satisfied: {community.get_state()['trips_satisfied']}\n")
+            my_output_stream.write(f"Energy Consumed: {self.petitions_satisfied_energy_consumed[from_community_key][1]}\n")
+            my_output_stream.write(f"------------------------------------------------------------------\n")
+        my_output_stream.write(f"\t\t\tTotal Trips Satisfied: {total_trips_satisfied}\n")
+        my_output_stream.write(f"\t\t\tTotal Energy Consumed: {total_energy_consumed}\n")
 
 
     def reset(self):
-        self.q_communities = self.communities
+        self.q_communities = copy.deepcopy(self.communities)
+
+    def get_state_information(self, community_index):
+        # Extract the current state information
+        from_community_id = self.q_communities[community_index].get_state()['id']
+        from_community_ev = self.q_communities[community_index].get_state()['available_vehicles']
+        to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors']) # randomly choosing a neighbor
+        to_community_ev =self.q_communities[to_community_id - 1].get_state()['available_vehicles']
+        return from_community_id, from_community_ev, to_community_id, to_community_ev
+
+    def get_state_representation(self):
+        # Combine the state information and return as a tuple
+        state_representation = []
+        for community in self.q_communities:
+            community_id = community.get_state()['id']
+            available_vehicles = community.get_state()['available_vehicles']
+            energy_consumed = community.get_state()['energy_consumed']
+            trips_satisfied = community.get_state()['trips_satisfied']
+            state_representation.extend([community_id, available_vehicles, trips_satisfied, energy_consumed])
+        return np.array(state_representation)
+
+    def serve(self, from_community_id, from_community_ev):
+        # Update trips satisfied and energy consumed based on the action
+        from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
+        self.q_communities[from_community_id-1].set_trips(self.petitions_satisfied_energy_consumed[from_community_key][0])
+
+    def rebalance_trips(self, from_community_id, from_community_ev, to_community_id, to_community_ev):
+        # Rebalance vehicles and update trips satisfied and energy consumed
+        if from_community_ev > 1:
+            from_community_ev = from_community_ev - 1
+            to_community_ev = to_community_ev + 1
+            self.q_communities[from_community_id-1].set_vehicles(from_community_ev)
+            self.q_communities[to_community_id-1].set_vehicles(to_community_ev)
+            from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
+            to_community_key = 'SEC_' + str(to_community_id) + "_num_EVs_" + str(to_community_ev)
+            self.q_communities[from_community_id-1].set_trips(self.petitions_satisfied_energy_consumed[from_community_key][0])
+            self.q_communities[to_community_id-1].set_trips(self.petitions_satisfied_energy_consumed[to_community_key][0])
+
+    def calculate_reward(self, from_community_id, from_community_ev, to_community_id, to_community_ev, action):
+        # Calculate the reward based on the new state
+        from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
+        to_community_key = 'SEC_' + str(to_community_id) + "_num_EVs_" + str(to_community_ev)
+        from_community_petitions, _ = self.petitions_satisfied_energy_consumed[from_community_key]
+        to_community_petitions, _ = self.petitions_satisfied_energy_consumed[to_community_key]
+        reward = 0
+        if action == 'serve':
+            reward = from_community_petitions
+        else:
+            reward = (from_community_petitions + to_community_petitions) / 2
+        return reward
+
 
 
 

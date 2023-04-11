@@ -1,7 +1,10 @@
 import parse_in
 import codecs
 from Q_Environment import TripsEnvironment, EnergyEnvironment
+from Deep_Q_Environment import DeepTripsEnvironment, DeepEnergyEnvironment
 from Community import Community
+import os
+import shutil
 
 def parse_initial_data():
 
@@ -76,20 +79,57 @@ def parse_initial_data():
 if __name__ == '__main__':
     # Run the Q Environment
     communities, num_evs, requests_satisfied_data = parse_initial_data()
-    episodes = 20
-    num_days = 50
+    episodes = [1, 5, 10, 15]
+    num_days = [5, 10, 15, 20]
+    # episodes = [5]
+    # num_days = [10]
+    paths = ['./output/trips_environment/',
+             './output/energy_environment/',
+             './output/deep_trips_environment/',
+             './output/deep_energy_environment/']
 
-    trips_env = TripsEnvironment(episodes, num_days, communities, num_evs, requests_satisfied_data)
-    trips_env.compute_initial_states_and_rewards()
-    trips_env.compute_initial_trips_satisfied()
-    trips_env.run()
-    trips_env.print_results()
+    for path in paths:
+        if os.path.exists(path):
+            os.chmod(path, 0o777)
+            shutil.rmtree(path)
+        os.mkdir(path)
 
-    energy_env = TripsEnvironment(episodes, num_days, communities, num_evs, requests_satisfied_data)
-    energy_env.compute_initial_states_and_rewards()
-    energy_env.compute_initial_trips_satisfied()
-    energy_env.run()
-    energy_env.print_results()
+    for episode in episodes:
+        for num_day in num_days:
+            file_name = str(episode)+'_episode_'+str(num_day)+'_days.txt'
+
+            path = paths[0]+file_name
+            trips_env = TripsEnvironment(episode, num_day, communities, num_evs, requests_satisfied_data)
+            trips_env.compute_initial_states_and_rewards()
+            trips_env.compute_initial_trips_satisfied()
+            trips_env.run()
+            trips_env.print_results(path)
+
+            path = paths[1]+file_name
+            energy_env = EnergyEnvironment(episode, num_day, communities, num_evs, requests_satisfied_data)
+            energy_env.compute_initial_states_and_rewards()
+            energy_env.compute_initial_trips_satisfied()
+            energy_env.run()
+            energy_env.print_results(path)
+
+            path = paths[2]+file_name
+            state_size = len(communities) * 4
+            action_size = 2
+            deep_trips_env = DeepTripsEnvironment(episode, num_day, communities, num_evs,
+                                                  requests_satisfied_data,
+                                                  state_size, action_size)
+            deep_trips_env.run()
+            deep_trips_env.print_results(path)
+
+            path = paths[3]+file_name
+            state_size = len(communities) * 4
+            action_size = 2
+            deep_energy_env = DeepEnergyEnvironment(episode, num_day, communities, num_evs,
+                                                  requests_satisfied_data,
+                                                  state_size, action_size)
+            deep_energy_env.run()
+            deep_energy_env.print_results(path)
+
 
 
 
