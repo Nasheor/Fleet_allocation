@@ -10,6 +10,7 @@ class Community:
         self.reward = 0
         self.trips_satisfied = 0
         self.energy_consumed = 0
+        self.energy_available = 0
 
     def reset(self):
         self.available_vehicles = self.initial_vehicle_count
@@ -26,6 +27,7 @@ class Community:
             'total_trips': self.initial_trips,
             'trips_satisfied': self.trips_satisfied,
             'energy_consumed': self.energy_consumed,
+            'energy_available': self.energy_available,
             'neighbors': self.neighbors,
             'reward': self.reward
         }
@@ -33,6 +35,7 @@ class Community:
 
     def set_vehicles(self, available_vehicles):
         self.available_vehicles = available_vehicles
+        self.energy_available = available_vehicles * 100
 
     def set_trips(self, trips_satisfied):
         self.trips_satisfied = trips_satisfied

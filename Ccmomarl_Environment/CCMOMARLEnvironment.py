@@ -10,7 +10,7 @@ import csv
 
 class CCMOMARLEnvironment(gym.Env):
     def __init__(self, episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed,
-                 total_trips, total_energy):
+                 total_trips, total_energy, path):
         super().__init__()
         self.env = TripsEnvironment(episodes, num_time_steps, communities, num_evs,
                                     petitions_satisfied_energy_consumed, total_trips, total_energy)
@@ -20,6 +20,7 @@ class CCMOMARLEnvironment(gym.Env):
         # Assuming two actions: serve and rebalance_trips
         self.action_space = spaces.MultiDiscrete([2] * num_agents)
         self.observation_space = spaces.Box(low=0, high=np.inf, shape=(len(self.env.communities) * 4,), dtype=np.float32)
+        self.path = path
 
     def create_agent(self):
         n_actions = self.action_space.shape[0]
@@ -119,4 +120,5 @@ class CCMOMARLEnvironment(gym.Env):
             writer.writerow(["Joint State", "Joint Action", "Joint Reward"])
             for state, action, reward in zip(joint_states, joint_actions, rewards):
                 writer.writerow([state, action, reward])
+        self.env.print_results(self.path)
 

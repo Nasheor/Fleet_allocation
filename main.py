@@ -2,6 +2,7 @@ import parse_in
 import codecs
 from Q_Environment import TripsEnvironment, EnergyEnvironment
 from Deep_Q_Environment import DeepTripsEnvironment, DeepEnergyEnvironment
+from Ccmomarl_Environment import CCMOMARLEnvironment
 from Community import Community
 import os
 import shutil
@@ -93,7 +94,8 @@ if __name__ == '__main__':
     paths = ['./output/trips_environment/',
              './output/energy_environment/',
              './output/deep_trips_environment/',
-             './output/deep_energy_environment/']
+             './output/deep_energy_environment/',
+             './output/ccmomarl_environment']
 
     for path in paths:
         if os.path.exists(path):
@@ -105,39 +107,44 @@ if __name__ == '__main__':
         for num_day in num_days:
             file_name = str(episode)+'_episode_'+str(num_day)+'_days.txt'
 
-            path = paths[0]+file_name
-            trips_env = TripsEnvironment(episode, num_day, communities, num_evs,
-                                         requests_satisfied_data, total_trips, total_energy)
-            trips_env.compute_initial_states_and_rewards()
-            trips_env.compute_initial_trips_satisfied()
-            trips_env.run()
-            trips_env.print_results(path)
+            # path = paths[0]+file_name
+            # trips_env = TripsEnvironment(episode, num_day, communities, num_evs,
+            #                              requests_satisfied_data, total_trips, total_energy)
+            # trips_env.compute_initial_states_and_rewards()
+            # trips_env.compute_initial_trips_satisfied()
+            # trips_env.run()
+            # trips_env.print_results(path)
+            #
+            # path = paths[1]+file_name
+            # energy_env = EnergyEnvironment(episode, num_day, communities, num_evs,
+            #                                requests_satisfied_data, total_trips, total_energy)
+            # energy_env.compute_initial_states_and_rewards()
+            # energy_env.compute_initial_trips_satisfied()
+            # energy_env.run()
+            # energy_env.print_results(path)
+            #
+            # path = paths[2]+file_name
+            # state_size = len(communities) * 4
+            # action_size = 2
+            # deep_trips_env = DeepTripsEnvironment(episode, num_day, communities, num_evs,
+            #                                       requests_satisfied_data,
+            #                                       state_size, action_size)
+            # deep_trips_env.run()
+            # deep_trips_env.print_results(path)
+            #
+            # path = paths[3]+file_name
+            # state_size = len(communities) * 4
+            # action_size = 2
+            # deep_energy_env = DeepEnergyEnvironment(episode, num_day, communities, num_evs,
+            #                                       requests_satisfied_data,
+            #                                       state_size, action_size)
+            # deep_energy_env.run()
+            # deep_energy_env.print_results(path)
 
-            path = paths[1]+file_name
-            energy_env = EnergyEnvironment(episode, num_day, communities, num_evs,
-                                           requests_satisfied_data, total_trips, total_energy)
-            energy_env.compute_initial_states_and_rewards()
-            energy_env.compute_initial_trips_satisfied()
-            energy_env.run()
-            energy_env.print_results(path)
-
-            path = paths[2]+file_name
-            state_size = len(communities) * 4
-            action_size = 2
-            deep_trips_env = DeepTripsEnvironment(episode, num_day, communities, num_evs,
-                                                  requests_satisfied_data,
-                                                  state_size, action_size)
-            deep_trips_env.run()
-            deep_trips_env.print_results(path)
-
-            path = paths[3]+file_name
-            state_size = len(communities) * 4
-            action_size = 2
-            deep_energy_env = DeepEnergyEnvironment(episode, num_day, communities, num_evs,
-                                                  requests_satisfied_data,
-                                                  state_size, action_size)
-            deep_energy_env.run()
-            deep_energy_env.print_results(path)
+            path = path[4]+file_name
+            ccmomarl_env = CCMOMARLEnvironment(episode, num_day, communities, num_evs,
+                                           requests_satisfied_data, total_trips, total_energy, path)
+            ccmomarl_env.run()
 
 
 
