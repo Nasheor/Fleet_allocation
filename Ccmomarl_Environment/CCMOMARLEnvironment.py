@@ -4,8 +4,10 @@ import numpy as np
 import gym
 from gym import spaces
 from Q_Environment import TripsEnvironment
-from stable_baselines3 import DDPG
-from stable_baselines3.common.noise import NormalActionNoise
+import torch
+import torch.nn as nn
+from torch.optim import Adam
+from ddpg_agent import DDPGAgent
 import csv
 
 class CCMOMARLEnvironment(gym.Env):
@@ -23,13 +25,12 @@ class CCMOMARLEnvironment(gym.Env):
         self.path = path
 
     def create_agent(self):
-        n_actions = self.action_space.shape[0]
-        action_noise = NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions))
-        agent = DDPG("MlpPolicy", self, action_noise=action_noise, verbose=1)
+        agent = DDPGAgent(self)
         return agent
 
     def get_joint_action(self, joint_state):
         return self.agent.predict(joint_state, deterministic=True)
+
     def step(self, action):
         self.execute_joint_action(action)
         joint_reward = self.calculate_joint_reward(action)
@@ -88,7 +89,7 @@ class CCMOMARLEnvironment(gym.Env):
 
     def run(self):
         # Train the agent
-        self.agent.learn(total_timesteps=self.num_time_steps * self.episodes)
+        self.agent.train(self.num_time_steps * self.episodes)
         # Initialize lists to store data
         rewards = []
         joint_states = []

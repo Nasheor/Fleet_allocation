@@ -87,10 +87,10 @@ if __name__ == '__main__':
         total_trips += trips
         total_energy += (ev * 100)
 
-    episodes = [1, 5, 10, 15]
-    num_days = [5, 10, 15, 20]
-    # episodes = [5]
-    # num_days = [10]
+    # episodes = [1, 5, 10, 15]
+    # num_days = [5, 10, 15, 20]
+    episodes = [5]
+    num_days = [10]
     paths = ['./output/trips_environment/',
              './output/energy_environment/',
              './output/deep_trips_environment/',
@@ -103,10 +103,12 @@ if __name__ == '__main__':
             shutil.rmtree(path)
         os.mkdir(path)
 
+    print('Reached here')
+
     for episode in episodes:
         for num_day in num_days:
             file_name = str(episode)+'_episode_'+str(num_day)+'_days.txt'
-
+            #
             # path = paths[0]+file_name
             # trips_env = TripsEnvironment(episode, num_day, communities, num_evs,
             #                              requests_satisfied_data, total_trips, total_energy)
