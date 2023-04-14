@@ -176,7 +176,15 @@ class EnergyEnvironment:
         # Extract the current state information
         from_community_id = self.q_communities[community_index].get_state()['id']
         from_community_ev = self.q_communities[community_index].get_state()['available_vehicles']
-        to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors']) # randomly choosing a neighbor
+        from_community_energy_consumed = self.q_communities[community_index].get_state()['energy_consumed']
+        to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors'])  # randomly choosing a neighbor
+        epsilon = 0.1
+        if np.random.uniform(0, 1) > epsilon:
+            for neighbor in self.q_communities[community_index].get_state()['neighbors']:
+                neighbor_energy_consumed_counter = self.q_communities[neighbor-1].get_state()['energy_consumed']
+                if (neighbor_energy_consumed_counter + from_community_energy_consumed)/2 < from_community_energy_consumed:
+                        chosen_neighbor = neighbor
+            to_community_id = chosen_neighbor
         to_community_ev =self.q_communities[to_community_id - 1].get_state()['available_vehicles']
         return from_community_id, from_community_ev, to_community_id, to_community_ev
 

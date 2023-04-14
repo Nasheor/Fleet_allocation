@@ -2,7 +2,7 @@ import parse_in
 import codecs
 from Q_Environment import TripsEnvironment, EnergyEnvironment
 from Deep_Q_Environment import DeepTripsEnvironment, DeepEnergyEnvironment
-from Ccmomarl_Environment import CCMOMARLEnvironment
+# from Ccmomarl_Environment import CCMOMARLEnvironment
 from Community import Community
 import os
 import shutil
@@ -143,10 +143,10 @@ if __name__ == '__main__':
             # deep_energy_env.run()
             # deep_energy_env.print_results(path)
 
-            path = path[4]+file_name
-            ccmomarl_env = CCMOMARLEnvironment(episode, num_day, communities, num_evs,
-                                           requests_satisfied_data, total_trips, total_energy, path)
-            ccmomarl_env.run()
+            # path = path[4]+file_name
+            # ccmomarl_env = CCMOMARLEnvironment(episode, num_day, communities, num_evs,
+            #                                requests_satisfied_data, total_trips, total_energy, path)
+            # ccmomarl_env.run()
 
 
 
