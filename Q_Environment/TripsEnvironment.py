@@ -183,7 +183,8 @@ class TripsEnvironment:
         from_community_ev = self.q_communities[community_index].get_state()['available_vehicles']
         from_community_trips_satisfied = self.q_communities[community_index].get_state()['trips_satisfied']
         chosen_neighbor = 0
-        to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors'])  # randomly choosing a neighbor
+        to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors'])
+        chosen_neighbor = to_community_id# randomly choosing a neighbor
         epsilon = 0.1
         if np.random.uniform(0, 1) > epsilon:
             for neighbor in self.q_communities[community_index].get_state()['neighbors']:
@@ -227,6 +228,8 @@ class TripsEnvironment:
         from_community_key = 'SEC_' + str(from_community_id) + "_num_EVs_" + str(from_community_ev)
         to_community_key = 'SEC_' + str(to_community_id) + "_num_EVs_" + str(to_community_ev)
         from_community_petitions, _ = self.petitions_satisfied_energy_consumed[from_community_key]
+        if to_community_key == 0:
+            print(to_community_id)
         to_community_petitions, _ = self.petitions_satisfied_energy_consumed[to_community_key]
         reward = 0
         if action == 'serve':

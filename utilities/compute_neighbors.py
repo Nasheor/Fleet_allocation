@@ -54,15 +54,15 @@ def divide_and_compute_neighbors(n, k):
     return communities, neighbors
 
 # Testing with a grid size 10000 and 16 communities
-grid_size = 10000
-num_communities = 16
-
-communities, neighbors = divide_and_compute_neighbors(grid_size, num_communities)
-
-input_file = '../ride_sharing_framework/2_Instances/Instance_to_solve/d_metropolis.in'
-print(neighbors)
-# Open the file in append mode
-with open(input_file, "a") as file:
-    # Write data to the file
-    for i, community_neighbors in neighbors.items():
-        file.write(f"{' '.join(str(x) for x in community_neighbors)}\n")
+# grid_size = 10000
+# num_communities = 16
+#
+# communities, neighbors = divide_and_compute_neighbors(grid_size, num_communities)
+#
+# input_file = '../ride_sharing_framework/2_Instances/Instance_to_solve/d_metropolis.in'
+# print(neighbors)
+# # Open the file in append mode
+# with open(input_file, "a") as file:
+#     # Write data to the file
+#     for i, community_neighbors in neighbors.items():
+#         file.write(f"{' '.join(str(x) for x in community_neighbors)}\n")

@@ -82,34 +82,34 @@ Energy Consumed: 866918.0
 			Total Energy Consumed: 13783366.0
 ------------------------------------------------------------------
 Commmunity ID: 1
-Available Vehicles: 24
-Total Trips: 625	Trips Satisfied: 370
-Energy Consumed: 834860.0
+Available Vehicles: 27
+Total Trips: 625	Trips Satisfied: 428
+Energy Consumed: 924228.0
 ------------------------------------------------------------------
 Commmunity ID: 2
-Available Vehicles: 26
-Total Trips: 625	Trips Satisfied: 368
-Energy Consumed: 884724.0
+Available Vehicles: 25
+Total Trips: 625	Trips Satisfied: 352
+Energy Consumed: 853514.0
 ------------------------------------------------------------------
 Commmunity ID: 3
-Available Vehicles: 25
-Total Trips: 625	Trips Satisfied: 429
-Energy Consumed: 807230.0
+Available Vehicles: 28
+Total Trips: 625	Trips Satisfied: 478
+Energy Consumed: 884250.0
 ------------------------------------------------------------------
 Commmunity ID: 4
-Available Vehicles: 25
-Total Trips: 625	Trips Satisfied: 364
-Energy Consumed: 864906.0
+Available Vehicles: 21
+Total Trips: 625	Trips Satisfied: 290
+Energy Consumed: 738820.0
 ------------------------------------------------------------------
 Commmunity ID: 5
-Available Vehicles: 23
-Total Trips: 625	Trips Satisfied: 270
-Energy Consumed: 800804.0
+Available Vehicles: 21
+Total Trips: 625	Trips Satisfied: 239
+Energy Consumed: 729732.0
 ------------------------------------------------------------------
 Commmunity ID: 6
-Available Vehicles: 26
-Total Trips: 625	Trips Satisfied: 270
-Energy Consumed: 910250.0
+Available Vehicles: 25
+Total Trips: 625	Trips Satisfied: 257
+Energy Consumed: 874736.0
 ------------------------------------------------------------------
 Commmunity ID: 7
 Available Vehicles: 26
@@ -117,29 +117,29 @@ Total Trips: 625	Trips Satisfied: 318
 Energy Consumed: 894020.0
 ------------------------------------------------------------------
 Commmunity ID: 8
-Available Vehicles: 28
-Total Trips: 625	Trips Satisfied: 284
-Energy Consumed: 976108.0
+Available Vehicles: 26
+Total Trips: 625	Trips Satisfied: 264
+Energy Consumed: 908548.0
 ------------------------------------------------------------------
 Commmunity ID: 9
-Available Vehicles: 21
-Total Trips: 625	Trips Satisfied: 252
-Energy Consumed: 742784.0
+Available Vehicles: 28
+Total Trips: 625	Trips Satisfied: 375
+Energy Consumed: 976558.0
 ------------------------------------------------------------------
 Commmunity ID: 10
-Available Vehicles: 26
-Total Trips: 625	Trips Satisfied: 311
-Energy Consumed: 892108.0
+Available Vehicles: 27
+Total Trips: 625	Trips Satisfied: 327
+Energy Consumed: 921724.0
 ------------------------------------------------------------------
 Commmunity ID: 11
-Available Vehicles: 24
-Total Trips: 625	Trips Satisfied: 306
-Energy Consumed: 835334.0
+Available Vehicles: 28
+Total Trips: 625	Trips Satisfied: 362
+Energy Consumed: 972508.0
 ------------------------------------------------------------------
 Commmunity ID: 12
-Available Vehicles: 26
-Total Trips: 625	Trips Satisfied: 278
-Energy Consumed: 890772.0
+Available Vehicles: 22
+Total Trips: 625	Trips Satisfied: 235
+Energy Consumed: 748974.0
 ------------------------------------------------------------------
 Commmunity ID: 13
 Available Vehicles: 25
@@ -147,19 +147,19 @@ Total Trips: 625	Trips Satisfied: 263
 Energy Consumed: 871970.0
 ------------------------------------------------------------------
 Commmunity ID: 14
-Available Vehicles: 26
-Total Trips: 625	Trips Satisfied: 229
-Energy Consumed: 891536.0
+Available Vehicles: 20
+Total Trips: 625	Trips Satisfied: 161
+Energy Consumed: 679566.0
 ------------------------------------------------------------------
 Commmunity ID: 15
-Available Vehicles: 29
-Total Trips: 625	Trips Satisfied: 239
-Energy Consumed: 991612.0
+Available Vehicles: 25
+Total Trips: 625	Trips Satisfied: 198
+Energy Consumed: 851074.0
 ------------------------------------------------------------------
 Commmunity ID: 16
-Available Vehicles: 20
-Total Trips: 625	Trips Satisfied: 118
-Energy Consumed: 691342.0
+Available Vehicles: 26
+Total Trips: 625	Trips Satisfied: 156
+Energy Consumed: 902158.0
 ------------------------------------------------------------------
-			Total Trips Satisfied: 4669
-			Total Energy Consumed: 13780360.0
+			Total Trips Satisfied: 4703
+			Total Energy Consumed: 13732380.0

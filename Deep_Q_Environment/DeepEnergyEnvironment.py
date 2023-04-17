@@ -5,17 +5,18 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
-
+import csv
 
 class DeepEnergyEnvironment(EnergyEnvironment):
     def __init__(self, episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed,
-                 state_size, action_size):
-        super().__init__(episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed)
+                 state_size, action_size, total_trips, total_energy, file_name):
+        super().__init__(episodes, num_time_steps, communities, num_evs, petitions_satisfied_energy_consumed,
+                         total_trips, total_energy)
         self.state_size = state_size
         self.action_size = action_size
         self.memory = []
         self.batch_size = 32
-        self.learning_rate = 0.001
+        self.learning_rate = 0.01
         self.epsilon = 1.0
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
@@ -23,6 +24,7 @@ class DeepEnergyEnvironment(EnergyEnvironment):
         self.target_update_freq = 100
         self.model = self.build_model()
         self.target_model = self.build_model()
+        self.csv_file = file_name
 
     def build_model(self):
         model = Sequential()
@@ -62,6 +64,9 @@ class DeepEnergyEnvironment(EnergyEnvironment):
 
     def run(self):
         step_count = 0
+        rewards = []
+        states = []
+        actions = []
         for episode in range(self.episodes):
             self.reset()
             for t in range(self.num_time_steps):
@@ -72,6 +77,10 @@ class DeepEnergyEnvironment(EnergyEnvironment):
                     reward, next_state, done = self.step(action, community_index=i)
                     next_state = np.reshape(next_state, [1, self.state_size])
 
+                    states.append(state)
+                    actions.append(action)
+                    rewards.append((reward))
+
                     self.remember(state, action, reward, next_state, done)
                     state = next_state
 
@@ -80,6 +89,11 @@ class DeepEnergyEnvironment(EnergyEnvironment):
                     step_count += 1
                     if step_count % self.target_update_freq == 0:
                         self.update_target_model()
+        with open(self.csv_file, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["State", "Action", "Reward"])
+            for state, action, reward in zip(states, actions, rewards):
+                writer.writerow([state, action, reward])
 
     def step(self, action, community_index):
         # Implement the logic for executing the chosen action and returning the next state, reward, and completion status

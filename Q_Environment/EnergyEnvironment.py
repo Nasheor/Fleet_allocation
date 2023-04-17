@@ -178,6 +178,7 @@ class EnergyEnvironment:
         from_community_ev = self.q_communities[community_index].get_state()['available_vehicles']
         from_community_energy_consumed = self.q_communities[community_index].get_state()['energy_consumed']
         to_community_id = random.choice(self.q_communities[community_index].get_state()['neighbors'])  # randomly choosing a neighbor
+        chosen_neighbor = to_community_id
         epsilon = 0.1
         if np.random.uniform(0, 1) > epsilon:
             for neighbor in self.q_communities[community_index].get_state()['neighbors']:
